@@ -163,7 +163,7 @@ car.start();
 
 
 
-//Question 6 - How many states are there?
+//Question 6 - How many airports are there?
 // Ok, this seems silly, but we're actually going to work with AJAX to get some data and process it
 // You need to load a geojson file, convert it to json, and then count up the number of entires it has...
 // In other words, print out to the console log the number of airports in the data set
@@ -173,7 +173,7 @@ car.start();
 
     //Step 1: Create the data request
     // You may not have your data stored in a data sub-directory, just update this appropriately
-    var request = new Request('WHERE THE FILE IS IF IT IS REMOTE');
+    // var request = new Request('WHERE THE FILE IS IF IT IS REMOTE');
 
     //Step 2: define Fetch parameters
     // Note this isn't really necessary, do you remember/know why?
@@ -182,51 +182,47 @@ car.start();
 
     //Step 3: use Fetch to retrieve the data and set up callback functions
  
+     // Step 1: Define the data request
+     var request = new Request('data/airports.json');
+     //Step 2: define Fetch parameters 
+     var init = {
+         method: 'GET'
+     }
+      //Step 3: use Fetch to retrieve the data
+      fetch(request, init)
+        .then(callback) //Step 4 Send retrieved data to a callback function
+ };
+ 
+ //define conversion callback function
+ function conversion(response){
+   //convert data to usable form
+   return response.json();
+ }
+ 
+ //define callback function
+ function callback(response){
+     //tasks using the data go here
+     console.log(response)
+ }
+ 
+ window.onload = jsAjax();
+ 
+ function callback(response) {
+   // stating that the response is an array of airport objects
+   const totalAirports = response.length; // Total number of airports
+   
+  // Count the number of civilian airports
+  // Here, we are saying that airports with type 'small', 'mid', and 'major' are civilian
+  const civilianAirports = airports.filter(airport => 
+    ['small', 'mid', 'major'].includes(airport.properties.type)
+  ).length;
+ 
+   // Output the result
+   console.log('Total Airports: ' + totalAirports);
+   console.log('Civilian Airports: ' + civilianAirports);
+ }
+ 
     
-// Step 1: Create the data request
-// Make sure you update the path to your data JSON file correctly
-var request = new Request('https://raw.githubusercontent.com/snlohse/Lab2/refs/heads/main/data/airports.json'); // Modify with your correct file location
-
-// Step 2: Define Fetch parameters (not necessary for this simple request, but included for clarity)
-var init = {
-  method: 'GET' // Default GET method is sufficient
-};
-
-// Step 3: Use Fetch to retrieve the data and set up callback functions
-fetch(request, init)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok ' + response.statusText);
-    }
-    return response.json();  // Convert the response to JSON format
-  })
-  .then(callback) // Send the converted data to the callback function
-  .catch(error => {
-    console.error('Error fetching the data:', error);
-    alert('Error: ' + error.message);  // Show the error message in an alert for easier debugging
-  });
-
-// Callback function to process the data
-function callback(response) {
-  // Access the 'features' array from the response
-  const airports = response.features;  // 'features' contains the list of airport objects
-
-  // Step 4: Count the total number of airports
-  const totalAirports = airports.length;
-
-// Step 5: Count the number of civilian airports
-// Here, we are assuming that airports with type 'small', 'mid', and 'major' are civilian
-const civilianAirports = airports.filter(airport => 
-  ['small', 'mid', 'major'].includes(airport.properties.type)
-).length;
-
-
-  // Step 6: Output the results to the console
-  console.log('Total Airports: ' + totalAirports);
-  console.log('Civilian Airports: ' + civilianAirports);
-}
-
-
 
 
 
@@ -266,7 +262,7 @@ const civilianAirports = airports.filter(airport =>
 <div id="mydiv"></div>
 
 <script>
-// Function to create a table with cities and their populations, passed as arguments
+/// Function to create a table with cities and their populations, passed as arguments
 function make_table(cities, population){
     // Create the table element
     var table = document.createElement("table");
