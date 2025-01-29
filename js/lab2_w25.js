@@ -183,31 +183,49 @@ car.start();
     //Step 3: use Fetch to retrieve the data and set up callback functions
  
     
-function jsAjax(){
-    // Step 1: Define the data request
-    var request = new Request('data/airports.json');
-    //Step 2: define Fetch parameters 
-    var init = {
-        method: 'GET'
-    }
-     //Step 3: use Fetch to retrieve the data
-     fetch(request, init)
-       .then(callback) //Step 4 Send retrieved data to a callback function
+// Step 1: Create the data request
+// Make sure you update the path to your data JSON file correctly
+var request = new Request('https://raw.githubusercontent.com/snlohse/Lab2/refs/heads/main/data/airports.json'); // Modify with your correct file location
+
+// Step 2: Define Fetch parameters (not necessary for this simple request, but included for clarity)
+var init = {
+  method: 'GET' // Default GET method is sufficient
 };
 
-//define conversion callback function
-function conversion(response){
-  //convert data to usable form
-  return response.json();
+// Step 3: Use Fetch to retrieve the data and set up callback functions
+fetch(request, init)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok ' + response.statusText);
+    }
+    return response.json();  // Convert the response to JSON format
+  })
+  .then(callback) // Send the converted data to the callback function
+  .catch(error => {
+    console.error('Error fetching the data:', error);
+    alert('Error: ' + error.message);  // Show the error message in an alert for easier debugging
+  });
+
+// Callback function to process the data
+function callback(response) {
+  // Access the 'features' array from the response
+  const airports = response.features;  // 'features' contains the list of airport objects
+
+  // Step 4: Count the total number of airports
+  const totalAirports = airports.length;
+
+// Step 5: Count the number of civilian airports
+// Here, we are assuming that airports with type 'small', 'mid', and 'major' are civilian
+const civilianAirports = airports.filter(airport => 
+  ['small', 'mid', 'major'].includes(airport.properties.type)
+).length;
+
+
+  // Step 6: Output the results to the console
+  console.log('Total Airports: ' + totalAirports);
+  console.log('Civilian Airports: ' + civilianAirports);
 }
 
-//define callback function
-function callback(response){
-    //tasks using the data go here
-    console.log(response)
-}
-
-window.onload = jsAjax();
 
 
 
