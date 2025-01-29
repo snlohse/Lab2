@@ -1,6 +1,4 @@
-<body>
 
-<script>
 function jsAjax(){
     // Step 1: Define the data request
     var request = new Request('data/airports.geojson');
@@ -26,5 +24,3 @@ function callback(response){
 }
 
 window.onload = jsAjax();
-</script>
-</body>
