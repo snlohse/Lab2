@@ -185,7 +185,7 @@ car.start();
     
 function jsAjax(){
     // Step 1: Define the data request
-    var request = new Request('data/airports.geojson');
+    var request = new Request('data/airports.json');
     //Step 2: define Fetch parameters 
     var init = {
         method: 'GET'
